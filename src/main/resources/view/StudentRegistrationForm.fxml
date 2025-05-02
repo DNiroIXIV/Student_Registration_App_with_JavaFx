@@ -42,7 +42,7 @@
          </font>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b5aaaa2f" height="50.0" layoutX="267.0" layoutY="102.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="150.0" AnchorPane.bottomAnchor="598.0" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="100.0" />
-      <TextField fx:id="txtStudentId" editable="false" layoutX="272.0" layoutY="102.0" prefHeight="50.0" prefWidth="140.0" style="-fx-background-color: transparent; -fx-text-fill: white;" AnchorPane.leftAnchor="305.0" AnchorPane.topAnchor="100.0">
+      <TextField fx:id="txtStudentId" editable="false" focusTraversable="false" layoutX="272.0" layoutY="102.0" prefHeight="50.0" prefWidth="140.0" style="-fx-background-color: transparent; -fx-text-fill: white;" AnchorPane.leftAnchor="305.0" AnchorPane.topAnchor="100.0">
          <font>
             <Font name="Segoe UI" size="20.0" />
          </font>
@@ -58,6 +58,14 @@
             <Font name="Segoe UI" size="20.0" />
          </font>
       </TextField>
+      <Label fx:id="lblNameError" layoutX="295.0" layoutY="230.0" prefHeight="30.0" prefWidth="350.0" style="-fx-background-color: #0d0d0d73;" textFill="#f02849" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="230.0">
+         <font>
+            <Font name="Tahoma" size="14.0" />
+         </font>
+         <padding>
+            <Insets left="5.0" />
+         </padding>
+      </Label>
       <Label alignment="CENTER_RIGHT" layoutX="67.0" layoutY="266.0" prefHeight="50.0" prefWidth="150.0" text="Email" textFill="WHITE" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="260.0">
          <font>
             <Font name="Segoe UI Bold" size="20.0" />
@@ -69,6 +77,14 @@
             <Font name="Segoe UI" size="20.0" />
          </font>
       </TextField>
+      <Label fx:id="lblEmailError" layoutX="300.0" layoutY="310.0" prefHeight="30.0" prefWidth="350.0" style="-fx-background-color: #0d0d0d73;" textFill="#f02849" visible="false">
+         <font>
+            <Font name="Tahoma" size="14.0" />
+         </font>
+         <padding>
+            <Insets left="5.0" />
+         </padding>
+      </Label>
       <Label alignment="CENTER_RIGHT" layoutX="67.0" layoutY="346.0" prefHeight="50.0" prefWidth="150.0" text="Password" textFill="WHITE" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="340.0">
          <font>
             <Font name="Segoe UI Bold" size="20.0" />
@@ -79,6 +95,14 @@
          <font>
             <Font name="Segoe UI" size="20.0" />
          </font></PasswordField>
+      <Label fx:id="lblPasswordError" layoutX="300.0" layoutY="390.0" prefHeight="30.0" prefWidth="350.0" style="-fx-background-color: #0d0d0d73;" textFill="#f02849" visible="false">
+         <font>
+            <Font name="Tahoma" size="14.0" />
+         </font>
+         <padding>
+            <Insets left="5.0" />
+         </padding>
+      </Label>
       <Label alignment="CENTER_RIGHT" layoutX="37.0" layoutY="422.0" prefHeight="50.0" prefWidth="230.0" text="Password Confirmation" textFill="WHITE" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="420.0">
          <font>
             <Font name="Segoe UI Bold" size="20.0" />
@@ -90,12 +114,28 @@
             <Font name="Segoe UI" size="20.0" />
          </font>
       </PasswordField>
+      <Label fx:id="lblConfirmPasswordError" layoutX="300.0" layoutY="470.0" prefHeight="30.0" prefWidth="350.0" style="-fx-background-color: #0d0d0d73;" textFill="#f02849" visible="false">
+         <font>
+            <Font name="Tahoma" size="14.0" />
+         </font>
+         <padding>
+            <Insets left="5.0" />
+         </padding>
+      </Label>
       <Label alignment="CENTER_RIGHT" layoutX="67.0" layoutY="498.0" prefHeight="50.0" prefWidth="150.0" text="Date of Birth" textFill="WHITE" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="500.0">
          <font>
             <Font name="Segoe UI Bold" size="20.0" />
          </font>
       </Label>
-      <DatePicker fx:id="datePickerDob" layoutX="267.0" layoutY="493.0" prefHeight="40.0" prefWidth="180.0" promptText="xx/xx/xxxx" style="-fx-font-size: 20; -fx-font-family: &quot;Segoe UI&quot;;" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="505.0" />
+      <DatePicker fx:id="datePickerDob" layoutX="267.0" layoutY="493.0" prefHeight="40.0" prefWidth="200.0" promptText="MM/DD/YYYY" style="-fx-font-size: 20; -fx-font-family: &quot;Segoe UI&quot;;" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="505.0" />
+      <Label fx:id="lblDobError" layoutX="300.0" layoutY="545.0" prefHeight="30.0" prefWidth="350.0" style="-fx-background-color: #0d0d0d73;" textFill="#f02849" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="545.0">
+         <font>
+            <Font name="Tahoma" size="14.0" />
+         </font>
+         <padding>
+            <Insets left="5.0" />
+         </padding>
+      </Label>
       <Label alignment="CENTER_RIGHT" layoutX="67.0" layoutY="561.0" prefHeight="50.0" prefWidth="150.0" text="Gender" textFill="WHITE" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="580.0">
          <font>
             <Font name="Segoe UI Bold" size="20.0" />
@@ -121,6 +161,14 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </HBox>
+      <Label fx:id="lblGenderError" layoutX="295.0" layoutY="637.0" prefHeight="30.0" prefWidth="350.0" style="-fx-background-color: #0d0d0d73;" textFill="#f02849" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="630.0">
+         <font>
+            <Font name="Tahoma" size="14.0" />
+         </font>
+         <padding>
+            <Insets left="5.0" />
+         </padding>
+      </Label>
       <Label alignment="CENTER" layoutX="81.0" layoutY="649.2" prefHeight="30.0" prefWidth="150.0" text="Already Registered?" textFill="#04e3f7" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="80.0">
          <font>
             <Font name="Calibri" size="16.0" />
@@ -130,12 +178,12 @@
             <Font name="Segoe UI Bold" size="20.0" />
          </font>
       </Button>
-      <Label alignment="CENTER" layoutX="429.0" layoutY="649.2" prefHeight="30.0" prefWidth="150.0" text="New Student?" textFill="#04e3f7" AnchorPane.bottomAnchor="70.39999999999998" AnchorPane.rightAnchor="70.60000000000002">
+      <Label alignment="CENTER" layoutX="477.80000000000007" layoutY="659.2" prefHeight="30.0" prefWidth="150.0" text="New Student?" textFill="#04e3f7" AnchorPane.bottomAnchor="70.0" AnchorPane.rightAnchor="70.0">
          <font>
             <Font name="Calibri" size="16.0" />
          </font>
       </Label>
-      <Button alignment="CENTER" layoutX="407.0" layoutY="679.0" mnemonicParsing="false" onAction="#btnRegisterOnAction" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #f1cbb4; -fx-background-radius: 40;" text="Register" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="50.0">
+      <Button fx:id="btnRegister" alignment="CENTER" layoutX="454.0" layoutY="696.0" mnemonicParsing="false" onAction="#btnRegisterOnAction" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #f1cbb4; -fx-background-radius: 40;" text="Register" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="50.0">
          <font>
             <Font name="Segoe UI Bold" size="20.0" />
          </font>
