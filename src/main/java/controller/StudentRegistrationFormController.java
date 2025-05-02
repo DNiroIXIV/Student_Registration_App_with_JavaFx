@@ -1,6 +1,7 @@
 package controller;
 
 import db.DBConnection;
+import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,13 +11,13 @@ import model.Student;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 public class StudentRegistrationFormController implements Initializable {
-
     @FXML
     private Button btnRegister;
 
@@ -77,11 +78,23 @@ public class StudentRegistrationFormController implements Initializable {
         validateFullName();
         validateEmailAddress();
         validatePassword();
+        confirmPassword();
+
         System.out.println("register clicked..");
     }
 
+    private boolean confirmPassword() {
+        if(!txtPassword.getText().equals(txtConfirmPassword.getText())){
+            lblConfirmPasswordError.setText("Password does not match!");
+            lblConfirmPasswordError.setVisible(true);
+            return false;
+        }
+        lblConfirmPasswordError.setVisible(false);
+        return true;
+    }
+
     private boolean validatePassword() {
-        if(txtPassword.getText().trim().isEmpty()){
+        if (txtPassword.getText().trim().isEmpty()) {
             lblPasswordError.setText("Password field cannot be empty!");
             lblPasswordError.setVisible(true);
             return false;
@@ -91,7 +104,7 @@ public class StudentRegistrationFormController implements Initializable {
     }
 
     private boolean validateEmailAddress() {
-        if(EmailValidator.getInstance().isValid(txtEmail.getText().trim()) && txtEmail.getText().length() <= EMAILMAXLENGTH){
+        if (EmailValidator.getInstance().isValid(txtEmail.getText().trim()) && txtEmail.getText().length() <= EMAILMAXLENGTH) {
             lblEmailError.setVisible(false);
             return true;
         }
@@ -101,7 +114,7 @@ public class StudentRegistrationFormController implements Initializable {
     }
 
     private boolean validateFullName() {
-        if(txtFullName.getText().trim().isEmpty()){
+        if (txtFullName.getText().trim().isEmpty()) {
             lblNameError.setText("Name field cannot be empty!");
             lblNameError.setVisible(true);
             return false;
@@ -118,6 +131,13 @@ public class StudentRegistrationFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         txtStudentId.setText(generateStudentId());
+        datePickerDob.setDayCellFactory(datePicker -> new DateCell(){
+            @Override
+            public void updateItem(LocalDate localDate, boolean empty) {
+                super.updateItem(localDate, empty);
+                setDisable(empty || localDate.isAfter(LocalDate.now()));
+            }
+        });
         btnRegister.disableProperty().bind(hasEmptyField());
     }
 
