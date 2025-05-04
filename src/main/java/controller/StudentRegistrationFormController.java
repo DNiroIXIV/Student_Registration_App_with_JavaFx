@@ -1,23 +1,26 @@
 package controller;
 
 import db.DBConnection;
-import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.util.StringConverter;
 import model.Student;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.regex.Pattern;
 
 public class StudentRegistrationFormController implements Initializable {
+
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     @FXML
     private Button btnRegister;
 
@@ -68,6 +71,8 @@ public class StudentRegistrationFormController implements Initializable {
 
     private static final int EMAILMAXLENGTH = 64;
 
+    private static final int MAXCHARS = 10;
+
     @FXML
     void btnLoginOnAction(ActionEvent event) {
 
@@ -95,7 +100,7 @@ public class StudentRegistrationFormController implements Initializable {
 
     private boolean validatePassword() {
         if (txtPassword.getText().trim().isEmpty()) {
-            lblPasswordError.setText("Password field cannot be empty!");
+            lblPasswordError.setText("Invalid Password!");
             lblPasswordError.setVisible(true);
             return false;
         }
@@ -131,14 +136,42 @@ public class StudentRegistrationFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         txtStudentId.setText(generateStudentId());
-        datePickerDob.setDayCellFactory(datePicker -> new DateCell(){
+        datePickerDob.setDayCellFactory(datePicker -> customDateCell());
+        customizeDatePickerDob();
+        btnRegister.disableProperty().bind(hasEmptyField());
+    }
+
+    private void customizeDatePickerDob() {
+        datePickerDob.setConverter(new StringConverter<LocalDate>() {
             @Override
-            public void updateItem(LocalDate localDate, boolean empty) {
-                super.updateItem(localDate, empty);
-                setDisable(empty || localDate.isAfter(LocalDate.now()));
+            public String toString(LocalDate localDate) {
+                return localDate == null ? "" : dateTimeFormatter.format(localDate);
+            }
+
+            @Override
+            public LocalDate fromString(String text) {
+                try {
+                    lblDobError.setVisible(false);
+                    return text.isEmpty() || text == null ? null : LocalDate.parse(text, dateTimeFormatter);
+                } catch (DateTimeParseException exception) {
+                    lblDobError.setText("Invalid Date Format! Use format 01/01/1900");
+                    lblDobError.setVisible(true);
+                    return null;
+                }
             }
         });
-        btnRegister.disableProperty().bind(hasEmptyField());
+
+        datePickerDob.getEditor().setTextFormatter(new TextFormatter<String>(change -> {
+            String text = change.getText();
+            String controlNewText = change.getControlNewText();
+
+            if(controlNewText.length() > MAXCHARS){
+                return null;
+            }
+            return change;
+
+        }));
+
     }
 
     private BooleanBinding hasEmptyField() {
@@ -147,5 +180,15 @@ public class StudentRegistrationFormController implements Initializable {
             isFieldEmpty = isFieldEmpty.or(textField.textProperty().isEmpty());
         }
         return isFieldEmpty;
+    }
+
+    private DateCell customDateCell(){
+        return new DateCell(){
+            @Override
+            public void updateItem(LocalDate localDate, boolean empty) {
+                super.updateItem(localDate, empty);
+                setDisable(empty || localDate.isAfter(LocalDate.now()));
+            }
+        };
     }
 }
