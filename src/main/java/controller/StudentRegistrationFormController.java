@@ -76,13 +76,13 @@ public class StudentRegistrationFormController implements Initializable {
 
     @FXML
     void btnLoginOnAction(ActionEvent event) {
-
+        //
     }
 
     @FXML
     void btnRegisterOnAction(ActionEvent event) {
         if (validateFullName() && validateEmailAddress() && validatePassword() && confirmPassword()) {
-
+            //
         }
         System.out.println("register clicked..");
 
@@ -142,7 +142,7 @@ public class StudentRegistrationFormController implements Initializable {
     }
 
     private void customizeDatePickerDob() {
-        datePickerDob.setConverter(new StringConverter<LocalDate>() {
+        datePickerDob.setConverter(new StringConverter<>() {
             @Override
             public String toString(LocalDate localDate) {
                 return localDate == null ? "" : dateTimeFormatter.format(localDate);
@@ -190,62 +190,27 @@ public class StudentRegistrationFormController implements Initializable {
             String[] segments = newText.split("/");
 
             try {
-                if(segments.length > 0 && !segments[0].isEmpty()){
+                if (segments.length > 0 && !segments[0].isEmpty()) {
                     int day = Integer.parseInt(segments[0]);
-                    if (segments[0].matches("00") || day > 31) {
+                    if (segments[0].matches("00") || day > 31 || segments[0].length() > 2) {
                         return null;
                     }
                 }
 
-                if(segments.length >  && !segments[0].isEmpty()){
-                    int day = Integer.parseInt(segments[0]);
-                    if (segments[0].matches("00") || day > 31) {
+                if (segments.length > 1 && !segments[1].isEmpty()) {
+                    int month = Integer.parseInt(segments[1]);
+                    if (segments[1].matches("00") || month > 12 || segments[1].length() > 2) {
                         return null;
                     }
                 }
 
-            } catch (ArrayIndexOutOfBoundsException ex) {
-
-            } catch (NumberFormatException ex) {
-
+                if (segments.length > 2 && !segments[2].isEmpty() && segments[2].matches("0000")) {
+                    return null;
+                }
+            } catch (ArrayIndexOutOfBoundsException | NumberFormatException ex) {
+                return null;
             }
             return change;
-
-
-            /*try {
-                if (parts.length > 0 && !parts[0].isEmpty()) {
-                    int day = Integer.parseInt(parts[0]);
-                    if (day < 1 || day > 31) return null;
-                }
-
-                if (parts.length > 1 && !parts[1].isEmpty()) {
-                    int month = Integer.parseInt(parts[1]);
-                    if (month < 1 || month > 12) return null;
-                }
-
-                if (parts.length > 2 && !parts[2].isEmpty()) {
-                    int year = Integer.parseInt(parts[2]);
-                    if (year < 1 || year > 9999) return null;
-                }
-            } catch (NumberFormatException e) {
-                return null; // Catch invalid numeric input
-            }*/
-
-            //return change;
-
-            /*if(newText.length() <= MAXCHARS){
-                if(newText.matches("^(([0-3]?)|)$")){
-                    return change;
-                } else if (newText.matches("^(0[1-9]|[12]\\d|3[01])/?$")) {
-                    return change;
-                } else if (newText.matches("^((0[1-9]|[12]\\d|3[01])/([01]?|(0[1-9]|1[0-2])/?))$")) {
-                    return change;
-                } else if (newText.matches("^(0[1-9]|[12]\\d|3[01])/((0[1-9]|1[0-2])/(?!0000)\\d{0,4})$")) {
-                    return change;
-                }
-            }
-            return null;*/
-
         }));
 
         datePickerDob.getEditor().textProperty().addListener(((observable, oldValue, newValue) -> {
