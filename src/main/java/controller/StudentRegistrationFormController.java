@@ -21,6 +21,7 @@ import java.util.ResourceBundle;
 public class StudentRegistrationFormController implements Initializable {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
     @FXML
     private Button btnRegister;
 
@@ -69,9 +70,9 @@ public class StudentRegistrationFormController implements Initializable {
     @FXML
     private TextField txtStudentId;
 
-    private static final int EMAILMAXLENGTH = 64;
+    private static final int EMAIL_MAX_LENGTH = 64;
 
-    private static final int MAXCHARS = 10;
+    private static final int MAX_CHARS = 10;
 
     @FXML
     void btnLoginOnAction(ActionEvent event) {
@@ -80,16 +81,15 @@ public class StudentRegistrationFormController implements Initializable {
 
     @FXML
     void btnRegisterOnAction(ActionEvent event) {
-        validateFullName();
-        validateEmailAddress();
-        validatePassword();
-        confirmPassword();
+        if (validateFullName() && validateEmailAddress() && validatePassword() && confirmPassword()) {
 
+        }
         System.out.println("register clicked..");
+
     }
 
     private boolean confirmPassword() {
-        if(!txtPassword.getText().equals(txtConfirmPassword.getText())){
+        if (!txtPassword.getText().equals(txtConfirmPassword.getText())) {
             lblConfirmPasswordError.setText("Password does not match!");
             lblConfirmPasswordError.setVisible(true);
             return false;
@@ -109,7 +109,7 @@ public class StudentRegistrationFormController implements Initializable {
     }
 
     private boolean validateEmailAddress() {
-        if (EmailValidator.getInstance().isValid(txtEmail.getText().trim()) && txtEmail.getText().length() <= EMAILMAXLENGTH) {
+        if (EmailValidator.getInstance().isValid(txtEmail.getText().trim()) && txtEmail.getText().length() <= EMAIL_MAX_LENGTH) {
             lblEmailError.setVisible(false);
             return true;
         }
@@ -150,28 +150,107 @@ public class StudentRegistrationFormController implements Initializable {
 
             @Override
             public LocalDate fromString(String text) {
+                lblDobError.setVisible(false);
                 try {
-                    lblDobError.setVisible(false);
-                    return text.isEmpty() || text == null ? null : LocalDate.parse(text, dateTimeFormatter);
+                    return text == null || text.isEmpty() ? null : LocalDate.parse(text, dateTimeFormatter);
                 } catch (DateTimeParseException exception) {
-                    lblDobError.setText("Invalid Date Format! Use format 01/01/1900");
+                    lblDobError.setText("Invalid Date!");
                     lblDobError.setVisible(true);
                     return null;
                 }
             }
         });
 
-        datePickerDob.getEditor().setTextFormatter(new TextFormatter<String>(change -> {
-            String text = change.getText();
-            String controlNewText = change.getControlNewText();
-
-            if(controlNewText.length() > MAXCHARS){
+        datePickerDob.getEditor().setTextFormatter(new TextFormatter<>(change -> {
+            String newText = change.getControlNewText();
+            if (newText.length() > MAX_CHARS) {
                 return null;
+            }
+
+            if (!newText.matches("[\\d/]*")) {
+                return null;
+            }
+
+            int digitCount = 0;
+            int slashCount = 0;
+
+            for (int i = 0; i < newText.length(); i++) {
+                if (Character.isDigit(newText.charAt(i))) {
+                    digitCount++;
+                } else if (newText.charAt(i) == '/') {
+                    slashCount++;
+                }
+            }
+
+
+            if (digitCount > 8 || slashCount > 2) {
+                return null;
+            }
+
+            String[] segments = newText.split("/");
+
+            try {
+                if(segments.length > 0 && !segments[0].isEmpty()){
+                    int day = Integer.parseInt(segments[0]);
+                    if (segments[0].matches("00") || day > 31) {
+                        return null;
+                    }
+                }
+
+                if(segments.length >  && !segments[0].isEmpty()){
+                    int day = Integer.parseInt(segments[0]);
+                    if (segments[0].matches("00") || day > 31) {
+                        return null;
+                    }
+                }
+
+            } catch (ArrayIndexOutOfBoundsException ex) {
+
+            } catch (NumberFormatException ex) {
+
             }
             return change;
 
+
+            /*try {
+                if (parts.length > 0 && !parts[0].isEmpty()) {
+                    int day = Integer.parseInt(parts[0]);
+                    if (day < 1 || day > 31) return null;
+                }
+
+                if (parts.length > 1 && !parts[1].isEmpty()) {
+                    int month = Integer.parseInt(parts[1]);
+                    if (month < 1 || month > 12) return null;
+                }
+
+                if (parts.length > 2 && !parts[2].isEmpty()) {
+                    int year = Integer.parseInt(parts[2]);
+                    if (year < 1 || year > 9999) return null;
+                }
+            } catch (NumberFormatException e) {
+                return null; // Catch invalid numeric input
+            }*/
+
+            //return change;
+
+            /*if(newText.length() <= MAXCHARS){
+                if(newText.matches("^(([0-3]?)|)$")){
+                    return change;
+                } else if (newText.matches("^(0[1-9]|[12]\\d|3[01])/?$")) {
+                    return change;
+                } else if (newText.matches("^((0[1-9]|[12]\\d|3[01])/([01]?|(0[1-9]|1[0-2])/?))$")) {
+                    return change;
+                } else if (newText.matches("^(0[1-9]|[12]\\d|3[01])/((0[1-9]|1[0-2])/(?!0000)\\d{0,4})$")) {
+                    return change;
+                }
+            }
+            return null;*/
+
         }));
 
+        datePickerDob.getEditor().textProperty().addListener(((observable, oldValue, newValue) -> {
+
+        }));
     }
 
     private BooleanBinding hasEmptyField() {
@@ -182,8 +261,8 @@ public class StudentRegistrationFormController implements Initializable {
         return isFieldEmpty;
     }
 
-    private DateCell customDateCell(){
-        return new DateCell(){
+    private DateCell customDateCell() {
+        return new DateCell() {
             @Override
             public void updateItem(LocalDate localDate, boolean empty) {
                 super.updateItem(localDate, empty);

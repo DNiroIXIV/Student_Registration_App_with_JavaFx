@@ -3,6 +3,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class Starter extends Application {
     public static void main(String[] args) {
         launch();
@@ -10,7 +12,7 @@ public class Starter extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("view/StudentRegistrationForm.fxml"))));
+        stage.setScene(new Scene(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("view/StudentRegistrationForm.fxml")))));
         stage.setResizable(false);
         stage.show();
     }

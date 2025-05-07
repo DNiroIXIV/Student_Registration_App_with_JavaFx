@@ -2,6 +2,8 @@
   <dictionary name="project">
     <words>
       <w>calibri</w>
+      <w>emailmaxlength</w>
+      <w>maxchars</w>
       <w>segoe</w>
     </words>
   </dictionary>
